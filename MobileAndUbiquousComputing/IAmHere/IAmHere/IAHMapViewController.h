@@ -1,5 +1,5 @@
 //
-//  IAHViewController.h
+//  IAHMapViewController.h
 //  IAmHere
 //
 //  Created by James Kizer on 9/12/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface IAHViewController : UIViewController
+@interface IAHMapViewController : UIViewController
 
 @end
