@@ -19,4 +19,6 @@
 
 - (id)initWithDictionary:(NSDictionary *)dictionary;
 
++(NSDateFormatter *)longDateFormatter;
+
 @end

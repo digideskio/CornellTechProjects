@@ -8,6 +8,7 @@
 
 #import "IAHAppDelegate.h"
 #import "IAHRegionController.h"
+#import <AFNetworkActivityLogger.h>
 
 @interface IAHAppDelegate()
 
@@ -21,8 +22,8 @@
 {
     // Override point for customization after application launch.
     
-    
-    
+    [[AFNetworkActivityLogger sharedLogger] setLevel:AFLoggerLevelDebug];
+    [[AFNetworkActivityLogger sharedLogger] startLogging];
     
     return YES;
 }

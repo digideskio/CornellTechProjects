@@ -9,6 +9,7 @@
 #import "IAHTabBarController.h"
 #import "IAHRegionController.h"
 #import "IAHNameController.h"
+#import "IAHCommunicationController.h"
 
 @interface IAHTabBarController ()
 
@@ -29,6 +30,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [IAHCommunicationController sharedController];
     
     NSString *name = [[IAHNameController sharedManager] name];
     if([name length] == 0)

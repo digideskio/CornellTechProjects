@@ -9,12 +9,17 @@
 #import "IAHSettingsViewController.h"
 #import "IAHNameController.h"
 #import "IAHRegionController.h"
+#import "IAHCommunicationController.h"
 
 @interface IAHSettingsViewController () <UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UITextField *userNameTextField;
 @property (weak, nonatomic) IBOutlet UIButton *clearUsernameButton;
 @property (weak, nonatomic) IBOutlet UIButton *regionMonitoringButton;
+@property (weak, nonatomic) IBOutlet UILabel *connectToTheInternetLabel;
+
+@property (strong, nonatomic) IBOutletCollection(UIControl) NSArray *interactiveViews;
+
 
 @end
 
@@ -35,6 +40,15 @@
     // Do any additional setup after loading the view.
     
     self.userNameTextField.delegate = self;
+    
+    
+    ReachabilityStatusChangeBlockType reachibilityBlock = ^(AFNetworkReachabilityStatus status) {
+        [self updateUI];
+    };
+    
+    [[IAHCommunicationController sharedController] addReachabilityStatusChangeBlock:reachibilityBlock];
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -62,10 +76,22 @@
         self.regionMonitoringButton.enabled = NO;
     }
     
+    self.userNameTextField.enabled = YES;
+    self.connectToTheInternetLabel.hidden = YES;
+    
     if([[IAHRegionController sharedManager] regionMonitoringEnabled])
         [self.regionMonitoringButton setTitle:@"Disable Region Monitoring" forState:UIControlStateNormal];
     else
         [self.regionMonitoringButton setTitle:@"Enable Region Monitoring" forState:UIControlStateNormal];
+    
+    if(![[IAHCommunicationController sharedController] reachable])
+    {
+        self.connectToTheInternetLabel.hidden = NO;
+        [self.interactiveViews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            UIControl *control = (UIControl *)obj;
+            control.enabled = NO;
+        }];
+    }
 }
 
 - (IBAction)regionMonitoringButtonPressed:(id)sender

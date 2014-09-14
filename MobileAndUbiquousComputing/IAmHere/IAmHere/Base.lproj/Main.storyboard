@@ -132,15 +132,25 @@
                                     <action selector="clearUsernameButtonPressed:" destination="4AW-PV-Slb" eventType="touchUpInside" id="Zji-On-aOs"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Connect to the internet" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LSD-Nj-Kzb">
+                                <rect key="frame" x="72" y="273" width="177" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Settings" id="2PW-ln-ZhN" userLabel="Tab Bar Item - Settings"/>
                     <connections>
                         <outlet property="clearUsernameButton" destination="Zoe-z8-vtb" id="urj-Zq-bew"/>
+                        <outlet property="connectToTheInternetLabel" destination="LSD-Nj-Kzb" id="nBt-D9-zWo"/>
                         <outlet property="regionMonitoringButton" destination="jEo-KI-6WW" id="h3k-fZ-ogR"/>
                         <outlet property="userNameLabel" destination="549-yQ-Q6U" id="R4Q-FZ-ZPl"/>
                         <outlet property="userNameTextField" destination="s9e-Aj-0ou" id="yKD-OR-5jJ"/>
+                        <outletCollection property="interactiveViews" destination="s9e-Aj-0ou" id="1Cq-Mm-8zM"/>
+                        <outletCollection property="interactiveViews" destination="Zoe-z8-vtb" id="wqn-Aq-85K"/>
+                        <outletCollection property="interactiveViews" destination="jEo-KI-6WW" id="hOF-IB-wAc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4p4-TO-UUH" userLabel="First Responder" sceneMemberID="firstResponder"/>
