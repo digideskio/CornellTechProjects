@@ -29,6 +29,11 @@
 		48B0C4D319C4BAE200DBABEF /* IAHNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4D219C4BAE200DBABEF /* IAHNameController.m */; };
 		48B0C4D619C4C7B700DBABEF /* IAHTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4D519C4C7B700DBABEF /* IAHTabBarController.m */; };
 		48B0C4D919C4CE2A00DBABEF /* IAHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4D819C4CE2A00DBABEF /* IAHSettingsViewController.m */; };
+		48B0C4DF19C5046900DBABEF /* IAHCommunicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4DE19C5046900DBABEF /* IAHCommunicationController.m */; };
+		48B0C4E219C50F6800DBABEF /* IAHOccupancyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4E119C50F6800DBABEF /* IAHOccupancyViewController.m */; };
+		48B0C4E519C50F8A00DBABEF /* IAHOccupancyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4E419C50F8A00DBABEF /* IAHOccupancyHistoryViewController.m */; };
+		48B0C4E819C5104D00DBABEF /* IAHCurrentOccupancyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4E719C5104D00DBABEF /* IAHCurrentOccupancyViewController.m */; };
+		48B0C4EB19C5123D00DBABEF /* IAHOccupancyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4EA19C5123D00DBABEF /* IAHOccupancyObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +79,16 @@
 		48B0C4D519C4C7B700DBABEF /* IAHTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHTabBarController.m; sourceTree = "<group>"; };
 		48B0C4D719C4CE2A00DBABEF /* IAHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHSettingsViewController.h; sourceTree = "<group>"; };
 		48B0C4D819C4CE2A00DBABEF /* IAHSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHSettingsViewController.m; sourceTree = "<group>"; };
+		48B0C4DD19C5046800DBABEF /* IAHCommunicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHCommunicationController.h; sourceTree = "<group>"; };
+		48B0C4DE19C5046900DBABEF /* IAHCommunicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHCommunicationController.m; sourceTree = "<group>"; };
+		48B0C4E019C50F6800DBABEF /* IAHOccupancyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHOccupancyViewController.h; sourceTree = "<group>"; };
+		48B0C4E119C50F6800DBABEF /* IAHOccupancyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHOccupancyViewController.m; sourceTree = "<group>"; };
+		48B0C4E319C50F8A00DBABEF /* IAHOccupancyHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHOccupancyHistoryViewController.h; sourceTree = "<group>"; };
+		48B0C4E419C50F8A00DBABEF /* IAHOccupancyHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHOccupancyHistoryViewController.m; sourceTree = "<group>"; };
+		48B0C4E619C5104D00DBABEF /* IAHCurrentOccupancyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHCurrentOccupancyViewController.h; sourceTree = "<group>"; };
+		48B0C4E719C5104D00DBABEF /* IAHCurrentOccupancyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHCurrentOccupancyViewController.m; sourceTree = "<group>"; };
+		48B0C4E919C5123D00DBABEF /* IAHOccupancyObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHOccupancyObject.h; sourceTree = "<group>"; };
+		48B0C4EA19C5123D00DBABEF /* IAHOccupancyObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHOccupancyObject.m; sourceTree = "<group>"; };
 		89CD0041B5334CFDB20031DB /* libPods-IAmHere.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-IAmHere.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		95D76D43A059462784F21CC5 /* Pods-IAmHere.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IAmHere.xcconfig"; path = "Pods/Pods-IAmHere.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -149,12 +164,22 @@
 				48B0C4D119C4BAE200DBABEF /* IAHNameController.h */,
 				48B0C4D219C4BAE200DBABEF /* IAHNameController.m */,
 				485AE53619C3DD0200DE6653 /* Main.storyboard */,
+				48B0C4E019C50F6800DBABEF /* IAHOccupancyViewController.h */,
+				48B0C4E119C50F6800DBABEF /* IAHOccupancyViewController.m */,
+				48B0C4E919C5123D00DBABEF /* IAHOccupancyObject.h */,
+				48B0C4EA19C5123D00DBABEF /* IAHOccupancyObject.m */,
+				48B0C4E619C5104D00DBABEF /* IAHCurrentOccupancyViewController.h */,
+				48B0C4E719C5104D00DBABEF /* IAHCurrentOccupancyViewController.m */,
+				48B0C4E319C50F8A00DBABEF /* IAHOccupancyHistoryViewController.h */,
+				48B0C4E419C50F8A00DBABEF /* IAHOccupancyHistoryViewController.m */,
 				48B0C4D719C4CE2A00DBABEF /* IAHSettingsViewController.h */,
 				48B0C4D819C4CE2A00DBABEF /* IAHSettingsViewController.m */,
 				485AE53919C3DD0200DE6653 /* IAHMapViewController.h */,
 				485AE53A19C3DD0200DE6653 /* IAHMapViewController.m */,
 				48B0C4CD19C3F72A00DBABEF /* IAHLocation.h */,
 				48B0C4CE19C3F72A00DBABEF /* IAHLocation.m */,
+				48B0C4DD19C5046800DBABEF /* IAHCommunicationController.h */,
+				48B0C4DE19C5046900DBABEF /* IAHCommunicationController.m */,
 				48B0C4CA19C3ED5B00DBABEF /* IAHRegionController.h */,
 				48B0C4CB19C3ED5B00DBABEF /* IAHRegionController.m */,
 				485AE53C19C3DD0200DE6653 /* Images.xcassets */,
@@ -336,6 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48B0C4EB19C5123D00DBABEF /* IAHOccupancyObject.m in Sources */,
 				48B0C4D919C4CE2A00DBABEF /* IAHSettingsViewController.m in Sources */,
 				485AE53119C3DD0200DE6653 /* main.m in Sources */,
 				48B0C4CC19C3ED5B00DBABEF /* IAHRegionController.m in Sources */,
@@ -343,7 +369,11 @@
 				485AE53B19C3DD0200DE6653 /* IAHMapViewController.m in Sources */,
 				48B0C4CF19C3F72A00DBABEF /* IAHLocation.m in Sources */,
 				48B0C4D619C4C7B700DBABEF /* IAHTabBarController.m in Sources */,
+				48B0C4E219C50F6800DBABEF /* IAHOccupancyViewController.m in Sources */,
+				48B0C4DF19C5046900DBABEF /* IAHCommunicationController.m in Sources */,
+				48B0C4E519C50F8A00DBABEF /* IAHOccupancyHistoryViewController.m in Sources */,
 				48B0C4D319C4BAE200DBABEF /* IAHNameController.m in Sources */,
+				48B0C4E819C5104D00DBABEF /* IAHCurrentOccupancyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
