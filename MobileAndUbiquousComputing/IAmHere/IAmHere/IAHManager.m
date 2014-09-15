@@ -13,8 +13,8 @@
 
 static NSString *SavedNameNSUserDefaultsKey = @"SaveNameNSUserDefaultsKey";
 
-//static NSTimeInterval updateDelayTime = 10*60; //20 mins
-static NSTimeInterval updateDelayTime = 10; //10 sec
+//static NSTimeInterval updateDelayTime = 20*60; //20 mins
+static NSTimeInterval updateDelayTime = 20; //10 sec
 static NSTimeInterval resetDelayTime = 29*60 + 55;
 
 typedef NS_ENUM(NSInteger, IAHManagerQueueState) {
@@ -34,10 +34,10 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 @property (strong, nonatomic) IAHOccupancyObject *occupancyObject;
 @property (nonatomic) IAHManagerQueueState queueState;
-@property (strong, nonatomic) NSTimer *updateTimer;
-@property (strong, nonatomic) NSTimer *resetTimer;
+//@property (strong, nonatomic) NSTimer *updateTimer;
+//@property (strong, nonatomic) NSTimer *resetTimer;
 @property (atomic) BOOL reachable;
-
+@property (strong, nonatomic) NSDate *lastUpdate;
 
 @end
 
@@ -99,6 +99,17 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
     return self;
 }
 
+-(void)IAHLog:(NSString *)message
+{
+    self.statusUpdates = [self.statusUpdates stringByAppendingString:[NSString stringWithFormat:@"[%@]: %@\n", [NSDate date], message]];
+}
+
+-(NSString *)statusUpdates
+{
+    if(!_statusUpdates) _statusUpdates = [[NSString alloc]init];
+    return _statusUpdates;
+}
+
 //-(void)setQueueState:(IAHManagerQueueState)queueState
 //{
 //    if(queueState == IAHManagerQueueDepart)
@@ -111,15 +122,15 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 //    _queueState = queueState;
 //}
 
--(NSTimer *)newUpdateTimer
-{
-    return [NSTimer scheduledTimerWithTimeInterval:updateDelayTime target:self selector:@selector(updateAlarmHandler) userInfo:nil repeats:NO];
-}
-
--(NSTimer *)newResetTimer
-{
-    return [NSTimer scheduledTimerWithTimeInterval:resetDelayTime target:self selector:@selector(resetAlarmHandler) userInfo:nil repeats:NO];
-}
+//-(NSTimer *)newUpdateTimer
+//{
+//    return [NSTimer scheduledTimerWithTimeInterval:updateDelayTime target:self selector:@selector(updateAlarmHandler) userInfo:nil repeats:NO];
+//}
+//
+//-(NSTimer *)newResetTimer
+//{
+//    return [NSTimer scheduledTimerWithTimeInterval:resetDelayTime target:self selector:@selector(resetAlarmHandler) userInfo:nil repeats:NO];
+//}
 
 
 //implement the queue FSM
@@ -208,7 +219,7 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)postArrive
 {
-    
+    [self IAHLog:@"Posting Arrive"];
     assert(!self.occupancyObject);
     if(self.reachable)
     {
@@ -221,8 +232,8 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)internalArrive
 {
-    assert(!self.updateTimer);
-    assert(!self.resetTimer);
+//    assert(!self.updateTimer);
+//    assert(!self.resetTimer);
     assert(!self.occupancyObject);
     [[IAHCommunicationController sharedController] arriveWithName:self.name onCompletion:^(id responseObject) {
         
@@ -239,21 +250,30 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)setUpdateAndResetTimers
 {
-    assert(!self.updateTimer);
-    assert(!self.resetTimer);
-    self.updateTimer = [self newUpdateTimer];
-    self.resetTimer = [self newResetTimer];
+//    assert(!self.updateTimer);
+//    assert(!self.resetTimer);
+    //self.updateTimer = [self newUpdateTimer];
+    //self.resetTimer = [self newResetTimer];
+    [self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
+    [self performSelector:@selector(resetAlarmHandler) withObject:nil afterDelay:resetDelayTime];
+    
 }
 
 -(void)postDepart
 {
+    [self IAHLog:@"Posting Depart"];
     //workaround for phantom departures
     if(!self.occupancyObject)
         return;
     
-    assert([self.updateTimer isValid]);
-    [self.updateTimer invalidate];
-    self.updateTimer = nil;
+//    assert([self.updateTimer isValid]);
+//    
+//    [self.updateTimer invalidate];
+//    self.updateTimer = nil;
+    
+    
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAlarmHandler) object:nil];
     
     if(self.reachable)
     {
@@ -265,10 +285,12 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)internalDepart
 {
-    assert(!self.updateTimer);
-    assert([self.resetTimer isValid]);
-    [self.resetTimer invalidate];
-    self.resetTimer = nil;
+//    assert(!self.updateTimer);
+//    assert([self.resetTimer isValid]);
+//    [self.resetTimer invalidate];
+//    self.resetTimer = nil;
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetAlarmHandler) object:nil];
     
     assert(self.occupancyObject);
     [[IAHCommunicationController sharedController] departForOccupancyObject:self.occupancyObject onCompletion:^(id responseObject) {
@@ -294,12 +316,14 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)internalUpdate
 {
-    assert([self.resetTimer isValid]);
-    [self.resetTimer invalidate];
-    self.resetTimer = nil;
+//    assert([self.resetTimer isValid]);
+//    [self.resetTimer invalidate];
+//    self.resetTimer = nil;
     
-    assert(!self.updateTimer);
-    assert(!self.resetTimer);
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetAlarmHandler) object:nil];
+    
+//    assert(!self.updateTimer);
+//    assert(!self.resetTimer);
     assert(self.occupancyObject);
     
     [[IAHCommunicationController sharedController] updateForOccupancyObject:self.occupancyObject onCompletion:^(id responseObject) {
@@ -314,18 +338,25 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)updateAlarmHandler
 {
-    assert(self.updateTimer);
-    [self.updateTimer invalidate];
-    self.updateTimer = nil;
+    [self IAHLog:@"Update alarm handler"];
+//    assert(self.updateTimer);
+//    [self.updateTimer invalidate];
+//    self.updateTimer = nil;
+    
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAlarmHandler) object:nil];
     
     [self update];
 }
 
 -(void)resetAlarmHandler
 {
-    assert(self.resetTimer);
-    [self.resetTimer invalidate];
-    self.resetTimer = nil;
+    [self IAHLog:@"Update alarm handler"];
+//    assert(self.resetTimer);
+//    [self.resetTimer invalidate];
+//    self.resetTimer = nil;
+    
+    
+    
     
     switch (self.queueState)
     {

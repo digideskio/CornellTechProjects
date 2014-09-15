@@ -55,7 +55,7 @@ static NSUInteger defaultRetryCount = 3;
         //since endpoints return mix of JSON and text, need compound serializer
         //note that this AFCompoundResponseSerializer tries AFJSONResponseSerializer
         //then AFHTTPResponseSerializer behavior.
-        //self.operationManager.responseSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[[AFJSONResponseSerializer serializer]]];
+        self.operationManager.responseSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[[AFJSONResponseSerializer serializer]]];
 
         
         __weak IAHCommunicationController *weakSelf = self;

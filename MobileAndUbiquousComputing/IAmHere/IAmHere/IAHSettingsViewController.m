@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *connectToTheInternetLabel;
 
 @property (strong, nonatomic) IBOutletCollection(UIControl) NSArray *interactiveViews;
+@property (weak, nonatomic) IBOutlet UITextView *logTextView;
 
 
 @end
@@ -78,6 +79,8 @@
     
     self.userNameTextField.enabled = YES;
     self.connectToTheInternetLabel.hidden = YES;
+    
+    self.logTextView.text = [[IAHManager sharedManager] statusUpdates];
     
     if([[IAHRegionController sharedManager] regionMonitoringEnabled])
         [self.regionMonitoringButton setTitle:@"Disable Region Monitoring" forState:UIControlStateNormal];
