@@ -8,7 +8,7 @@
 
 #import "IAHTabBarController.h"
 #import "IAHRegionController.h"
-#import "IAHNameController.h"
+#import "IAHManager.h"
 #import "IAHCommunicationController.h"
 
 @interface IAHTabBarController ()
@@ -33,7 +33,7 @@
     
     [IAHCommunicationController sharedController];
     
-    NSString *name = [[IAHNameController sharedManager] name];
+    NSString *name = [[IAHManager sharedManager] name];
     if([name length] == 0)
     {
         [[IAHRegionController sharedManager] setRegionMonitoring:NO completion:^{

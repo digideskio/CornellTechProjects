@@ -7,7 +7,7 @@
 //
 
 #import "IAHSettingsViewController.h"
-#import "IAHNameController.h"
+#import "IAHManager.h"
 #import "IAHRegionController.h"
 #import "IAHCommunicationController.h"
 
@@ -61,7 +61,7 @@
 
 -(void)updateUI
 {
-    NSString *name = [[IAHNameController sharedManager] name];
+    NSString *name = [[IAHManager sharedManager] name];
     if([name length] > 0)
     {
         
@@ -126,7 +126,7 @@
     [activityIndicator startAnimating];
     activityIndicator.center = self.view.center;
     [self.view addSubview:activityIndicator];
-    [[IAHNameController sharedManager]setName:@"" completion:^{
+    [[IAHManager sharedManager]setName:@"" completion:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             [activityIndicator removeFromSuperview];
             self.view.userInteractionEnabled = YES;
@@ -163,7 +163,7 @@
         [activityIndicator startAnimating];
         activityIndicator.center = self.view.center;
         [self.view addSubview:activityIndicator];
-        [[IAHNameController sharedManager]setName:name completion:^{
+        [[IAHManager sharedManager]setName:name completion:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [activityIndicator removeFromSuperview];
                 self.view.userInteractionEnabled = YES;

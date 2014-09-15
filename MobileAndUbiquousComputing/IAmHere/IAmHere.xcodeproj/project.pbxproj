@@ -22,11 +22,11 @@
 		485AE54619C3DD0200DE6653 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 485AE52819C3DD0200DE6653 /* UIKit.framework */; };
 		485AE54E19C3DD0200DE6653 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 485AE54C19C3DD0200DE6653 /* InfoPlist.strings */; };
 		485AE55019C3DD0200DE6653 /* IAmHereTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 485AE54F19C3DD0200DE6653 /* IAmHereTests.m */; };
+		489A342719C6896600E04C0B /* IAHManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 489A342619C6896600E04C0B /* IAHManager.m */; };
 		48B0C4C719C3E67F00DBABEF /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B0C4C619C3E67F00DBABEF /* MapKit.framework */; };
 		48B0C4C919C3EB3C00DBABEF /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48B0C4C819C3EB3C00DBABEF /* CoreLocation.framework */; };
 		48B0C4CC19C3ED5B00DBABEF /* IAHRegionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4CB19C3ED5B00DBABEF /* IAHRegionController.m */; };
 		48B0C4CF19C3F72A00DBABEF /* IAHLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4CE19C3F72A00DBABEF /* IAHLocation.m */; };
-		48B0C4D319C4BAE200DBABEF /* IAHNameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4D219C4BAE200DBABEF /* IAHNameController.m */; };
 		48B0C4D619C4C7B700DBABEF /* IAHTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4D519C4C7B700DBABEF /* IAHTabBarController.m */; };
 		48B0C4D919C4CE2A00DBABEF /* IAHSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4D819C4CE2A00DBABEF /* IAHSettingsViewController.m */; };
 		48B0C4DF19C5046900DBABEF /* IAHCommunicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B0C4DE19C5046900DBABEF /* IAHCommunicationController.m */; };
@@ -66,6 +66,8 @@
 		485AE54B19C3DD0200DE6653 /* IAmHereTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "IAmHereTests-Info.plist"; sourceTree = "<group>"; };
 		485AE54D19C3DD0200DE6653 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		485AE54F19C3DD0200DE6653 /* IAmHereTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IAmHereTests.m; sourceTree = "<group>"; };
+		489A342519C6896600E04C0B /* IAHManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHManager.h; sourceTree = "<group>"; };
+		489A342619C6896600E04C0B /* IAHManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHManager.m; sourceTree = "<group>"; };
 		48B0C4C619C3E67F00DBABEF /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		48B0C4C819C3EB3C00DBABEF /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		48B0C4CA19C3ED5B00DBABEF /* IAHRegionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHRegionController.h; sourceTree = "<group>"; };
@@ -73,8 +75,6 @@
 		48B0C4CD19C3F72A00DBABEF /* IAHLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHLocation.h; sourceTree = "<group>"; };
 		48B0C4CE19C3F72A00DBABEF /* IAHLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHLocation.m; sourceTree = "<group>"; };
 		48B0C4D019C408F300DBABEF /* TestLocations.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestLocations.gpx; sourceTree = "<group>"; };
-		48B0C4D119C4BAE200DBABEF /* IAHNameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHNameController.h; sourceTree = "<group>"; };
-		48B0C4D219C4BAE200DBABEF /* IAHNameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHNameController.m; sourceTree = "<group>"; };
 		48B0C4D419C4C7B700DBABEF /* IAHTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHTabBarController.h; sourceTree = "<group>"; };
 		48B0C4D519C4C7B700DBABEF /* IAHTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IAHTabBarController.m; sourceTree = "<group>"; };
 		48B0C4D719C4CE2A00DBABEF /* IAHSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAHSettingsViewController.h; sourceTree = "<group>"; };
@@ -161,8 +161,6 @@
 				485AE53419C3DD0200DE6653 /* IAHAppDelegate.m */,
 				48B0C4D419C4C7B700DBABEF /* IAHTabBarController.h */,
 				48B0C4D519C4C7B700DBABEF /* IAHTabBarController.m */,
-				48B0C4D119C4BAE200DBABEF /* IAHNameController.h */,
-				48B0C4D219C4BAE200DBABEF /* IAHNameController.m */,
 				485AE53619C3DD0200DE6653 /* Main.storyboard */,
 				48B0C4E019C50F6800DBABEF /* IAHOccupancyViewController.h */,
 				48B0C4E119C50F6800DBABEF /* IAHOccupancyViewController.m */,
@@ -182,6 +180,8 @@
 				48B0C4DE19C5046900DBABEF /* IAHCommunicationController.m */,
 				48B0C4CA19C3ED5B00DBABEF /* IAHRegionController.h */,
 				48B0C4CB19C3ED5B00DBABEF /* IAHRegionController.m */,
+				489A342519C6896600E04C0B /* IAHManager.h */,
+				489A342619C6896600E04C0B /* IAHManager.m */,
 				485AE53C19C3DD0200DE6653 /* Images.xcassets */,
 				485AE52B19C3DD0200DE6653 /* Supporting Files */,
 			);
@@ -371,8 +371,8 @@
 				48B0C4D619C4C7B700DBABEF /* IAHTabBarController.m in Sources */,
 				48B0C4E219C50F6800DBABEF /* IAHOccupancyViewController.m in Sources */,
 				48B0C4DF19C5046900DBABEF /* IAHCommunicationController.m in Sources */,
+				489A342719C6896600E04C0B /* IAHManager.m in Sources */,
 				48B0C4E519C50F8A00DBABEF /* IAHOccupancyHistoryViewController.m in Sources */,
-				48B0C4D319C4BAE200DBABEF /* IAHNameController.m in Sources */,
 				48B0C4E819C5104D00DBABEF /* IAHCurrentOccupancyViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

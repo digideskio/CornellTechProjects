@@ -8,16 +8,14 @@
 
 #import "IAHRegionController.h"
 #import "IAHOccupancyObject.h" 
-#import "IAHCommunicationController.h"
-#import "IAHNameController.h"
+//#import "IAHCommunicationController.h"
+//#import "IAHNameController.h"
+#import "IAHManager.h"
 
 static CLLocationCoordinate2D CornellTechCoordinates = {40.7411873,-74.0026933};
 static CLLocationDistance CornellTechRegionRadius = 100; //100m
 
-//static NSTimeInterval updateDelayTime = 10*60; //20 mins
-static NSTimeInterval updateDelayTime = 60; //10 sec
 
-static NSTimeInterval clearDelayTime = 30*60;
 
 typedef NS_ENUM(NSInteger, IAHRegionState) {
     IAHRegionStateInside,
@@ -89,14 +87,17 @@ typedef NS_ENUM(NSInteger, IAHRegionState) {
     //tell comm controller to issue arrive
     NSLog(@"sending arrival message");
     
-    [[IAHCommunicationController sharedController] arriveWithName:[[IAHNameController sharedManager] name]
-                                                     onCompletion:^(id responseObject)
-    {
-        self.occupancyObject = [[IAHOccupancyObject alloc]initWithDictionary:(NSDictionary *)responseObject];
-        //perform update in 20 mins
-        [self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
-        //[self performSelector:@selector(clearAlarmHandler) withObject:nil afterDelay:clearDelayTime];
-    }];
+    [[IAHManager sharedManager] postArrive];
+    
+    
+//    [[IAHCommunicationController sharedController] arriveWithName:[[IAHNameController sharedManager] name]
+//                                                     onCompletion:^(id responseObject)
+//    {
+//        self.occupancyObject = [[IAHOccupancyObject alloc]initWithDictionary:(NSDictionary *)responseObject];
+//        //perform update in 20 mins
+//        [self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
+//        //[self performSelector:@selector(clearAlarmHandler) withObject:nil afterDelay:clearDelayTime];
+//    }];
     
     
     
@@ -110,44 +111,51 @@ typedef NS_ENUM(NSInteger, IAHRegionState) {
 
 -(void)departHandler
 {
+    
+    NSLog(@"sending depart message");
+    
+    [[IAHManager sharedManager] postDepart];
+    
+    
+    
     //assert(self.state == IAHRegionStateInside);
     //self.state = IAHRegionStateOutside;
-    if(self.occupancyObject)
-    {
-        
-        //tell comm controller to issue depart
-        NSLog(@"sending depart message");
-        
-        //cancel update
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAlarmHandler) object:nil];
-        
-        [[IAHCommunicationController sharedController] departForOccupancyObject:self.occupancyObject
-                                                                   onCompletion:^(id responseObject)
-         {
-             //self.occupancyObject = [[IAHOccupancyObject alloc]initWithDictionary:(NSDictionary *)responseObject];
-             //perform update in 20 mins
-             //[self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
-             //[self performSelector:@selector(clearAlarmHandler) withObject:nil afterDelay:clearDelayTime];
-         }];
-    }
+//    if(self.occupancyObject)
+//    {
+//        
+//        //tell comm controller to issue depart
+//        NSLog(@"sending depart message");
+//        
+//        //cancel update
+//        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAlarmHandler) object:nil];
+//        
+//        [[IAHCommunicationController sharedController] departForOccupancyObject:self.occupancyObject
+//                                                                   onCompletion:^(id responseObject)
+//         {
+//             //self.occupancyObject = [[IAHOccupancyObject alloc]initWithDictionary:(NSDictionary *)responseObject];
+//             //perform update in 20 mins
+//             //[self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
+//             //[self performSelector:@selector(clearAlarmHandler) withObject:nil afterDelay:clearDelayTime];
+//         }];
+//    }
 }
 
-- (void)updateAlarmHandler
-{
-    //assert(self.state == IAHRegionStateInside);
-    assert(self.occupancyObject);
-    //tell comm controller to issue update
-    NSLog(@"sending update message");
-    
-    [[IAHCommunicationController sharedController] updateForOccupancyObject:self.occupancyObject
-                                                               onCompletion:^(id responseObject)
-     {
-         //self.occupancyObject = [[IAHOccupancyObject alloc]initWithDictionary:(NSDictionary *)responseObject];
-         //perform update in 20 mins
-         [self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
-         //[self performSelector:@selector(clearAlarmHandler) withObject:nil afterDelay:clearDelayTime];
-     }];
-}
+//- (void)updateAlarmHandler
+//{
+//    //assert(self.state == IAHRegionStateInside);
+//    assert(self.occupancyObject);
+//    //tell comm controller to issue update
+//    NSLog(@"sending update message");
+//    
+//    [[IAHCommunicationController sharedController] updateForOccupancyObject:self.occupancyObject
+//                                                               onCompletion:^(id responseObject)
+//     {
+//         //self.occupancyObject = [[IAHOccupancyObject alloc]initWithDictionary:(NSDictionary *)responseObject];
+//         //perform update in 20 mins
+//         [self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
+//         //[self performSelector:@selector(clearAlarmHandler) withObject:nil afterDelay:clearDelayTime];
+//     }];
+//}
 
 //- (BOOL)atCornellTech
 //{

@@ -18,6 +18,9 @@ typedef void (^ReachabilityStatusChangeBlockType)(AFNetworkReachabilityStatus st
 + (id)sharedController;
 @property (nonatomic) NSUInteger retryCount;
 
+//-(void)arrive;
+//-(void)depart;
+
 -(void)arriveWithName:(NSString *)name onCompletion:(completionBlockWithResponseObject)complete;
 -(void)updateForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete;
 -(void)departForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete;

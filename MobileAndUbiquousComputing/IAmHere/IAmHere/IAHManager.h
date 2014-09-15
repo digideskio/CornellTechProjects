@@ -1,8 +1,8 @@
 //
-//  IAHNameController.h
+//  IAHManager.h
 //  IAmHere
 //
-//  Created by James Kizer on 9/13/14.
+//  Created by James Kizer on 9/14/14.
 //  Copyright (c) 2014 Kizer Development. All rights reserved.
 //
 
@@ -10,9 +10,12 @@
 
 typedef void (^completionBlock)();
 
-@interface IAHNameController : NSObject
+@interface IAHManager : NSObject
 
 + (id)sharedManager;
+
+-(void)postArrive;
+-(void)postDepart;
 
 @property (strong, nonatomic) NSString *name;
 -(void)setName:(NSString *)name completion:(completionBlock)complete;

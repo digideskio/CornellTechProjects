@@ -8,23 +8,18 @@
 
 #import "IAHCommunicationController.h"
 #import <AFNetworking.h>
-#import "IAHNameController.h"
+//#import "IAHNameController.h"
 #import "IAHOccupancyObject.h"
 
 static NSString *baseURLString = @"http://iamhere.smalldata.io";
 static NSUInteger defaultRetryCount = 3;
 
-typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
-    IAHCommunicationControllerQueueEmpty,
-    IAHCommunicationControllerQueueArrive,
-    IAHCommunicationControllerQueueUpdate,
-    IAHCommunicationControllerQueueDepart
-};
+
 
 @interface IAHCommunicationController()
 
 @property (strong, nonatomic) AFHTTPRequestOperationManager *operationManager;
-@property (atomic) IAHCommunicationControllerQueueState queueState;
+//@property (atomic) IAHCommunicationControllerQueueState queueState;
 @property (strong, nonatomic) IAHOccupancyObject *occupancyObject;
 @property (strong, nonatomic) NSArray *reachabilityBlocks;
 
@@ -56,8 +51,12 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
         self.retryCount = defaultRetryCount;
         
         [self.operationManager.reachabilityManager startMonitoring];
-        
-        self.operationManager.responseSerializer.acceptableContentTypes = [self.operationManager.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+
+        //since endpoints return mix of JSON and text, need compound serializer
+        //note that this AFCompoundResponseSerializer tries AFJSONResponseSerializer
+        //then AFHTTPResponseSerializer behavior.
+        //self.operationManager.responseSerializer = [AFCompoundResponseSerializer compoundSerializerWithResponseSerializers:@[[AFJSONResponseSerializer serializer]]];
+
         
         __weak IAHCommunicationController *weakSelf = self;
         [self.operationManager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
@@ -69,33 +68,7 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
             
         }];
         
-        ReachabilityStatusChangeBlockType queueBlock = ^(AFNetworkReachabilityStatus status) {
-            
-            if( (status == AFNetworkReachabilityStatusReachableViaWiFi) || (status == AFNetworkReachabilityStatusReachableViaWWAN))
-            {
-                switch (weakSelf.queueState)
-                {
-                    case IAHCommunicationControllerQueueArrive:
-                        
-                        break;
-                        
-                    case IAHCommunicationControllerQueueDepart:
-                        
-                        break;
-                        
-                    case IAHCommunicationControllerQueueUpdate:
-                        
-                        break;
-                        
-                    case IAHCommunicationControllerQueueEmpty:
-                    default:
-                        break;
-                }
-            }
-            
-        };
         
-        [self addReachabilityStatusChangeBlock:queueBlock];
         
     }
     
@@ -114,15 +87,17 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
 
 -(void)arriveWithName:(NSString *)name onCompletion:(completionBlockWithResponseObject)complete
 {
-    if(self.operationManager.reachabilityManager.reachable)
-    {
-        NSString *name = [[IAHNameController sharedManager] name];
-        [self postArrivalForName:name onCompletion:complete];
-    }
-    else
-    {
-        //self.queueState = IAHCommunicationControllerQueueArrive;
-    }
+//    if(self.operationManager.reachabilityManager.reachable)
+//    {
+//        //NSString *name = [[IAHNameController sharedManager] name];
+//        [self postArrivalForName:name onCompletion:complete];
+//    }
+//    else
+//    {
+//        //self.queueState = IAHCommunicationControllerQueueArrive;
+//    }
+    
+    [self postArrivalForName:name onCompletion:complete];
 }
 
 -(void)postArrivalForName:(NSString *)name onCompletion:(completionBlockWithResponseObject)complete
@@ -158,14 +133,16 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
 
 -(void)updateForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
 {
-    if(self.operationManager.reachabilityManager.reachable)
-    {
-        [self postUpdateForOccupancyObject:occupancyObject onCompletion:complete];
-    }
-    else
-    {
-        //self.queueState = IAHCommunicationControllerQueueArrive;
-    }
+//    if(self.operationManager.reachabilityManager.reachable)
+//    {
+//        [self postUpdateForOccupancyObject:occupancyObject onCompletion:complete];
+//    }
+//    else
+//    {
+//        //self.queueState = IAHCommunicationControllerQueueArrive;
+//    }
+    
+    [self postUpdateForOccupancyObject:occupancyObject onCompletion:complete];
 }
 
 -(void)postUpdateForOccupancyObject:(IAHOccupancyObject *)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
@@ -203,14 +180,16 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
 
 -(void)departForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
 {
-    if(self.operationManager.reachabilityManager.reachable)
-    {
-        [self postDepartForOccupancyObject:occupancyObject onCompletion:complete];
-    }
-    else
-    {
-        //self.queueState = IAHCommunicationControllerQueueArrive;
-    }
+//    if(self.operationManager.reachabilityManager.reachable)
+//    {
+//        [self postDepartForOccupancyObject:occupancyObject onCompletion:complete];
+//    }
+//    else
+//    {
+//        //self.queueState = IAHCommunicationControllerQueueArrive;
+//    }
+    
+    [self postDepartForOccupancyObject:occupancyObject onCompletion:complete];
 }
 
 -(void)postDepartForOccupancyObject:(IAHOccupancyObject *)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
@@ -222,8 +201,7 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
     
     requestBlock = ^(NSUInteger retryCount) {
         
-        NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:@"POST" URLString:[[NSURL URLWithString:urlString relativeToURL:self.operationManager.baseURL] absoluteString] parameters:nil error:nil];
-        AFHTTPRequestOperation *operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self.operationManager POST:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if(complete)
                 complete(responseObject);
             
@@ -241,10 +219,6 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
             }
             
         }];
-        
-        operation.responseSerializer = [AFHTTPResponseSerializer serializer];
-        
-        [self.operationManager.operationQueue addOperation:operation];
     };
     requestBlock2 = requestBlock;
     requestBlock(self.retryCount);
@@ -257,7 +231,6 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
     requestBlock = ^(NSUInteger retryCount) {
         
         [self.operationManager GET:@"/history" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            //NSLog(@"Got History Objects");
             if(complete)
                 complete(responseObject);
             
@@ -288,7 +261,6 @@ typedef NS_ENUM(NSInteger, IAHCommunicationControllerQueueState) {
     requestBlock = ^(NSUInteger retryCount) {
         
         [self.operationManager GET:@"/occupancy" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            //NSLog(@"Got History Objects");
             if(complete)
                 complete(responseObject);
             
