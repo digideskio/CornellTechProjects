@@ -14,7 +14,7 @@
 static NSString *SavedNameNSUserDefaultsKey = @"SaveNameNSUserDefaultsKey";
 
 //static NSTimeInterval updateDelayTime = 20*60; //20 mins
-static NSTimeInterval updateDelayTime = 20; //10 sec
+static NSTimeInterval updateDelayTime = 10; //10 sec
 static NSTimeInterval resetDelayTime = 29*60 + 55;
 
 typedef NS_ENUM(NSInteger, IAHManagerQueueState) {
@@ -38,6 +38,8 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 //@property (strong, nonatomic) NSTimer *resetTimer;
 @property (atomic) BOOL reachable;
 @property (strong, nonatomic) NSDate *lastUpdate;
+@property (nonatomic) BOOL shouldUpdateOnExpiration;
+@property (nonatomic) BOOL shouldResetOnExpiration;
 
 @end
 
@@ -241,7 +243,11 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
         self.occupancyObject = [[IAHOccupancyObject alloc] initWithDictionary:(NSDictionary *)responseObject];
         
         //set update and reset timers
-        [self setUpdateAndResetTimers];
+        //[self setUpdateAndResetTimers];
+        
+        self.lastUpdate = [NSDate date];
+        self.shouldUpdateOnExpiration = YES;
+        self.shouldResetOnExpiration = YES;
         
     }];
     
@@ -273,7 +279,7 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
     
     
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAlarmHandler) object:nil];
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateAlarmHandler) object:nil];
     
     if(self.reachable)
     {
@@ -290,7 +296,7 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 //    [self.resetTimer invalidate];
 //    self.resetTimer = nil;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetAlarmHandler) object:nil];
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetAlarmHandler) object:nil];
     
     assert(self.occupancyObject);
     [[IAHCommunicationController sharedController] departForOccupancyObject:self.occupancyObject onCompletion:^(id responseObject) {
@@ -299,6 +305,7 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
         
         //clear occupancy object
         self.occupancyObject = nil;
+        self.lastUpdate = nil;
         
     }];
     
@@ -306,6 +313,7 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)update
 {
+    
     if(self.reachable)
     {
         [self internalUpdate];
@@ -320,7 +328,7 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 //    [self.resetTimer invalidate];
 //    self.resetTimer = nil;
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetAlarmHandler) object:nil];
+    //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetAlarmHandler) object:nil];
     
 //    assert(!self.updateTimer);
 //    assert(!self.resetTimer);
@@ -331,14 +339,71 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
         assert(responseObject);
         
         //set update and reset timers
-        [self setUpdateAndResetTimers];
+        //[self setUpdateAndResetTimers];
+        self.lastUpdate = [NSDate date];
+        self.shouldUpdateOnExpiration = YES;
         
     }];
+}
+
+-(void)performBackgroundFetch:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    [self IAHLog:@"Background Fetch"];
+    NSLog(@"Background Fetch");
+    
+//    if(self.shouldResetOnExpiration && [[self.lastUpdate dateByAddingTimeInterval:resetDelayTime] timeIntervalSinceNow] < 0)
+//    {
+//
+//    }
+    
+    //check for reset
+//    if( !self.resetIssued && [[self.lastUpdate dateByAddingTimeInterval:resetDelayTime] timeIntervalSinceNow] < 0)
+//    {
+//        [self IAHLog:@"Background Fetch"];
+//        NSLog(@"Background Fetch");
+//        [self resetAlarmHandler];
+//    }
+//    else if( !self.updateIssued && ([[self.lastUpdate dateByAddingTimeInterval:updateDelayTime] timeIntervalSinceNow] < 0))
+//    {
+//        [self IAHLog:@"Background Fetch"];
+//        NSLog(@"Background Fetch");
+//        //[self updateAlarmHandler];
+//        
+//        {
+//            //    assert([self.resetTimer isValid]);
+//            //    [self.resetTimer invalidate];
+//            //    self.resetTimer = nil;
+//            
+//            //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resetAlarmHandler) object:nil];
+//            
+//            //    assert(!self.updateTimer);
+//            //    assert(!self.resetTimer);
+//            assert(self.occupancyObject);
+//            
+//            [[IAHCommunicationController sharedController] updateForOccupancyObject:self.occupancyObject onCompletion:^(id responseObject) {
+//                
+//                assert(responseObject);
+//                
+//                //set update and reset timers
+//                //[self setUpdateAndResetTimers];
+//                self.lastUpdate = [NSDate date];
+//                self.updateIssued = NO;
+//                
+//                if(completionHandler)
+//                    completionHandler(UIBackgroundFetchResultNoData);
+//                
+//            }];
+//        }
+//    }
+    
+    if(completionHandler)
+        completionHandler(UIBackgroundFetchResultNoData);
 }
 
 -(void)updateAlarmHandler
 {
     [self IAHLog:@"Update alarm handler"];
+    self.shouldUpdateOnExpiration = NO;
 //    assert(self.updateTimer);
 //    [self.updateTimer invalidate];
 //    self.updateTimer = nil;
@@ -350,7 +415,9 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)resetAlarmHandler
 {
-    [self IAHLog:@"Update alarm handler"];
+    [self IAHLog:@"Reset alarm handler"];
+    self.shouldUpdateOnExpiration = NO;
+    self.shouldResetOnExpiration = NO;
 //    assert(self.resetTimer);
 //    [self.resetTimer invalidate];
 //    self.resetTimer = nil;

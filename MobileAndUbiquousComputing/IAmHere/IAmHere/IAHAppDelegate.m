@@ -9,6 +9,7 @@
 #import "IAHAppDelegate.h"
 #import "IAHRegionController.h"
 #import <AFNetworkActivityLogger.h>
+#import "IAHManager.h"
 
 @interface IAHAppDelegate()
 
@@ -25,7 +26,15 @@
     [[AFNetworkActivityLogger sharedLogger] setLevel:AFLoggerLevelDebug];
     [[AFNetworkActivityLogger sharedLogger] startLogging];
     
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    
     return YES;
+}
+
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    // We will add content here soon.
+    [[IAHManager sharedManager] performBackgroundFetch:completionHandler];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

@@ -17,8 +17,13 @@ typedef void (^completionBlock)();
 -(void)postArrive;
 -(void)postDepart;
 
+-(void)performBackgroundFetch:(void (^)(UIBackgroundFetchResult))completionHandler;
+
 @property (strong, nonatomic) NSString *name;
 -(void)setName:(NSString *)name completion:(completionBlock)complete;
 
 @property (strong, nonatomic) NSString *statusUpdates;
+
+
+
 @end
