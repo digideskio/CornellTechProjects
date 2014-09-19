@@ -112,16 +112,8 @@ typedef NS_ENUM(NSInteger, IAHManagerRequest) {
 
 -(void)enablePollTimer
 {
-    if(!self.nextPollTimerFireTime)
-    {
-        if([self.nextPollTimerFireTime timeIntervalSinceNow] < 0)
-        {
-            [self performBackgroundFetch:nil];
-            self.nextPollTimerFireTime = [NSDate dateWithTimeIntervalSinceNow:pollingPeriod];
-        }
-    }([self.nextPollTimerFireTime timeIntervalSinceNow] < 0))
-    
-    }
+    if(!self.nextPollTimerFireTime || ([self.nextPollTimerFireTime timeIntervalSinceNow] < 0))
+        self.nextPollTimerFireTime = [NSDate dateWithTimeIntervalSinceNow:pollingPeriod];
     
     [self IAHLog:[NSString stringWithFormat:@"Setting poll timer fire time to %@", self.nextPollTimerFireTime]];
     self.pollTimer = [[NSTimer alloc] initWithFireDate:self.nextPollTimerFireTime interval:pollingPeriod target:self selector:@selector(pollHandler:) userInfo:nil repeats:YES];
