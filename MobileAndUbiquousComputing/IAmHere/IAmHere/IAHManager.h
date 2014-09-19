@@ -24,6 +24,9 @@ typedef void (^completionBlock)();
 
 @property (strong, nonatomic) NSString *statusUpdates;
 
+-(void)IAHLog:(NSString *)logString;
 
+-(void)disablePollTimer;
+-(void)enablePollTimer;
 
 @end

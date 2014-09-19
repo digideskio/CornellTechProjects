@@ -12,7 +12,9 @@
 //#import "IAHNameController.h"
 #import "IAHManager.h"
 
+
 static CLLocationCoordinate2D CornellTechCoordinates = {40.7411873,-74.0026933};
+//static CLLocationCoordinate2D CornellTechCoordinates = {40.689240,-73.983647};
 static CLLocationDistance CornellTechRegionRadius = 100; //100m
 
 
@@ -81,25 +83,10 @@ typedef NS_ENUM(NSInteger, IAHRegionState) {
 
 -(void)arriveHandler
 {
-    //assert(self.state == IAHRegionStateOutside);
-    //self.state = IAHRegionStateInside;
-    
     //tell comm controller to issue arrive
     NSLog(@"sending arrival message");
     
     [[IAHManager sharedManager] postArrive];
-    
-    
-//    [[IAHCommunicationController sharedController] arriveWithName:[[IAHNameController sharedManager] name]
-//                                                     onCompletion:^(id responseObject)
-//    {
-//        self.occupancyObject = [[IAHOccupancyObject alloc]initWithDictionary:(NSDictionary *)responseObject];
-//        //perform update in 20 mins
-//        [self performSelector:@selector(updateAlarmHandler) withObject:nil afterDelay:updateDelayTime];
-//        //[self performSelector:@selector(clearAlarmHandler) withObject:nil afterDelay:clearDelayTime];
-//    }];
-    
-    
     
 }
 

@@ -21,9 +21,9 @@ typedef void (^ReachabilityStatusChangeBlockType)(AFNetworkReachabilityStatus st
 //-(void)arrive;
 //-(void)depart;
 
--(void)arriveWithName:(NSString *)name onCompletion:(completionBlockWithResponseObject)complete;
--(void)updateForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete;
--(void)departForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete;
+-(void)arriveWithName:(NSString *)name success:(completionBlockWithResponseObject)complete failure:(void (^)(UIBackgroundFetchResult))completionHandler;
+-(void)updateForOccupancyObject:(IAHOccupancyObject*)occupancyObject success:(completionBlockWithResponseObject)complete failure:(void (^)(UIBackgroundFetchResult))completionHandler;
+-(void)departForOccupancyObject:(IAHOccupancyObject*)occupancyObject success:(completionBlockWithResponseObject)complete failure:(void (^)(UIBackgroundFetchResult))completionHandler;
 
 -(void)getOccupancyHistoryOnCompletion:(completionBlockWithResponseObject)complete;
 -(void)getCurrentOccupancyOnCompletion:(completionBlockWithResponseObject)complete;

@@ -68,10 +68,6 @@ static NSUInteger defaultRetryCount = 3;
             
         }];
         
-        
-        
-        
-        
     }
     
     return self;
@@ -87,22 +83,7 @@ static NSUInteger defaultRetryCount = 3;
     self.reachabilityBlocks = [self.reachabilityBlocks arrayByAddingObject:block];
 }
 
--(void)arriveWithName:(NSString *)name onCompletion:(completionBlockWithResponseObject)complete
-{
-//    if(self.operationManager.reachabilityManager.reachable)
-//    {
-//        //NSString *name = [[IAHNameController sharedManager] name];
-//        [self postArrivalForName:name onCompletion:complete];
-//    }
-//    else
-//    {
-//        //self.queueState = IAHCommunicationControllerQueueArrive;
-//    }
-    
-    [self postArrivalForName:name onCompletion:complete];
-}
-
--(void)postArrivalForName:(NSString *)name onCompletion:(completionBlockWithResponseObject)complete
+-(void)arriveWithName:(NSString *)name success:(completionBlockWithResponseObject)complete failure:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     __block void (^requestBlock)(NSUInteger);
     __block void (^requestBlock2)(NSUInteger);
@@ -121,8 +102,8 @@ static NSUInteger defaultRetryCount = 3;
             }
             else
             {
-                if(complete)
-                    complete(nil);
+                if(completionHandler)
+                    completionHandler(UIBackgroundFetchResultFailed);
             }
             
         }];
@@ -132,22 +113,7 @@ static NSUInteger defaultRetryCount = 3;
     requestBlock(self.retryCount);
 }
 
-
--(void)updateForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
-{
-//    if(self.operationManager.reachabilityManager.reachable)
-//    {
-//        [self postUpdateForOccupancyObject:occupancyObject onCompletion:complete];
-//    }
-//    else
-//    {
-//        //self.queueState = IAHCommunicationControllerQueueArrive;
-//    }
-    
-    [self postUpdateForOccupancyObject:occupancyObject onCompletion:complete];
-}
-
--(void)postUpdateForOccupancyObject:(IAHOccupancyObject *)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
+-(void)updateForOccupancyObject:(IAHOccupancyObject*)occupancyObject success:(completionBlockWithResponseObject)complete failure:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     __block void (^requestBlock)(NSUInteger);
     __block void (^requestBlock2)(NSUInteger);
@@ -169,8 +135,8 @@ static NSUInteger defaultRetryCount = 3;
             }
             else
             {
-                if(complete)
-                    complete(nil);
+                if(completionHandler)
+                    completionHandler(UIBackgroundFetchResultFailed);
             }
             
         }];
@@ -180,21 +146,7 @@ static NSUInteger defaultRetryCount = 3;
     requestBlock(self.retryCount);
 }
 
--(void)departForOccupancyObject:(IAHOccupancyObject*)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
-{
-//    if(self.operationManager.reachabilityManager.reachable)
-//    {
-//        [self postDepartForOccupancyObject:occupancyObject onCompletion:complete];
-//    }
-//    else
-//    {
-//        //self.queueState = IAHCommunicationControllerQueueArrive;
-//    }
-    
-    [self postDepartForOccupancyObject:occupancyObject onCompletion:complete];
-}
-
--(void)postDepartForOccupancyObject:(IAHOccupancyObject *)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
+-(void)departForOccupancyObject:(IAHOccupancyObject*)occupancyObject success:(completionBlockWithResponseObject)complete failure:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     __block void (^requestBlock)(NSUInteger);
     __block void (^requestBlock2)(NSUInteger);
@@ -216,8 +168,8 @@ static NSUInteger defaultRetryCount = 3;
             }
             else
             {
-                if(complete)
-                    complete(nil);
+                if(completionHandler)
+                    completionHandler(UIBackgroundFetchResultFailed);
             }
             
         }];
@@ -226,13 +178,47 @@ static NSUInteger defaultRetryCount = 3;
     requestBlock(self.retryCount);
 }
 
--(void)getOccupancyHistoryOnCompletion:(completionBlockWithResponseObject)complete
+//-(void)postDepartForOccupancyObject:(IAHOccupancyObject *)occupancyObject onCompletion:(completionBlockWithResponseObject)complete
+//{
+//    __block void (^requestBlock)(NSUInteger);
+//    __block void (^requestBlock2)(NSUInteger);
+//    
+//    NSString *urlString = [NSString stringWithFormat:@"/occupancy/%@/depart", occupancyObject.idNumber];
+//    
+//    requestBlock = ^(NSUInteger retryCount) {
+//        
+//        [self.operationManager POST:urlString parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            if(complete)
+//                complete(responseObject);
+//            
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"Error: %@", error);
+//            if (retryCount > 0)
+//            {
+//                NSLog(@"Retrying...");
+//                requestBlock2(retryCount-1);
+//            }
+//            else
+//            {
+//                if(complete)
+//                    complete(nil);
+//            }
+//            
+//        }];
+//    };
+//    requestBlock2 = requestBlock;
+//    requestBlock(self.retryCount);
+//}
+
+-(void)getList:(NSString *)listURL onCompletion:(completionBlockWithResponseObject)complete
 {
     __block void (^requestBlock)(NSUInteger);
     __block void (^requestBlock2)(NSUInteger);
     requestBlock = ^(NSUInteger retryCount) {
         
-        [self.operationManager GET:@"/history" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:@"/occupancy" relativeToURL:self.operationManager.baseURL] absoluteString] parameters:nil error:nil];
+        
+        AFHTTPRequestOperation *operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
             if(complete)
                 complete(responseObject);
             
@@ -251,39 +237,89 @@ static NSUInteger defaultRetryCount = 3;
             
         }];
         
+        
+        operation.responseSerializer = [AFJSONResponseSerializer serializer];
+        operation.responseSerializer.acceptableContentTypes = [operation.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+        
+        [self.operationManager.operationQueue addOperation:operation];
+        
     };
     requestBlock2 = requestBlock;
     requestBlock(self.retryCount);
+}
+
+
+-(void)getOccupancyHistoryOnCompletion:(completionBlockWithResponseObject)complete
+{
+//    __block void (^requestBlock)(NSUInteger);
+//    __block void (^requestBlock2)(NSUInteger);
+//    requestBlock = ^(NSUInteger retryCount) {
+//        
+//        [self.operationManager GET:@"/history" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            if(complete)
+//                complete(responseObject);
+//            
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"Error: %@", error);
+//            if (retryCount > 0)
+//            {
+//                NSLog(@"Retrying...");
+//                requestBlock2(retryCount-1);
+//            }
+//            else
+//            {
+//                if(complete)
+//                    complete(nil);
+//            }
+//            
+//        }];
+//        
+//    };
+//    requestBlock2 = requestBlock;
+//    requestBlock(self.retryCount);
+    
+    [self getList:@"/history" onCompletion:complete];
 }
 
 -(void)getCurrentOccupancyOnCompletion:(completionBlockWithResponseObject)complete
 {
-    __block void (^requestBlock)(NSUInteger);
-    __block void (^requestBlock2)(NSUInteger);
-    requestBlock = ^(NSUInteger retryCount) {
-        
-        [self.operationManager GET:@"/occupancy" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            if(complete)
-                complete(responseObject);
-            
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"Error: %@", error);
-            if (retryCount > 0)
-            {
-                NSLog(@"Retrying...");
-                requestBlock2(retryCount-1);
-            }
-            else
-            {
-                if(complete)
-                    complete(nil);
-            }
-            
-        }];
-        
-    };
-    requestBlock2 = requestBlock;
-    requestBlock(self.retryCount);
+    
+    [self getList:@"/occupancy" onCompletion:complete];
+    
+//    __block void (^requestBlock)(NSUInteger);
+//    __block void (^requestBlock2)(NSUInteger);
+//    requestBlock = ^(NSUInteger retryCount) {
+//        
+//        NSMutableURLRequest *request = [self.operationManager.requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:@"/occupancy" relativeToURL:self.operationManager.baseURL] absoluteString] parameters:nil error:nil];
+//        
+//        AFHTTPRequestOperation *operation = [self.operationManager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+//            if(complete)
+//                complete(responseObject);
+//            
+//        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//            NSLog(@"Error: %@", error);
+//            if (retryCount > 0)
+//            {
+//                NSLog(@"Retrying...");
+//                requestBlock2(retryCount-1);
+//            }
+//            else
+//            {
+//                if(complete)
+//                    complete(nil);
+//            }
+//            
+//        }];
+//            
+//        
+//        operation.responseSerializer = [AFJSONResponseSerializer serializer];
+//        operation.responseSerializer.acceptableContentTypes = [operation.responseSerializer.acceptableContentTypes setByAddingObject:@"text/html"];
+//        
+//        [self.operationManager.operationQueue addOperation:operation];
+//        
+//    };
+//    requestBlock2 = requestBlock;
+//    requestBlock(self.retryCount);
 }
 
 
